@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Simulado Interativo - Geologia de Engenharia</title>
+<style>
+:root{--bg:#f4f6f8;--card:#fff;--text:#17202a;--muted:#667085;--line:#d9dee5;--accent:#1f6feb;--ok:#147a42;--bad:#b42318}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif;line-height:1.5}
+header{background:#16212b;color:white;padding:28px 20px}.wrap{max-width:1000px;margin:auto}h1{margin:0 0 6px;font-size:28px}header p{margin:0;color:#d9e2ec}
+.toolbar{position:sticky;top:0;background:white;border-bottom:1px solid var(--line);z-index:5;padding:12px 20px;box-shadow:0 2px 10px #0000000b}.toolbar .wrap{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+button{border:0;border-radius:8px;padding:11px 16px;font-weight:700;cursor:pointer;background:var(--accent);color:white}button.secondary{background:#e9eef5;color:#17202a}.score{margin-left:auto;font-weight:700}
+main{padding:22px 20px 60px}section{max-width:1000px;margin:0 auto 24px}section h2{font-size:18px;margin:24px 0 12px;color:#243b53}
+.question{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin:12px 0;box-shadow:0 1px 2px #00000008}.question h3{font-size:16px;margin:0 0 14px}
+label{display:block;padding:8px;border-radius:7px;cursor:pointer}label:hover{background:#f0f4f8}
+textarea,input{font:inherit}textarea{width:100%;resize:vertical;min-height:100px;border:1px solid #c9d2dc;border-radius:8px;padding:10px}
+.fillinput{border:1px solid #c9d2dc;border-radius:7px;padding:9px;width:320px}.fillinput.small{width:110px}.fillrow{display:flex;gap:10px;flex-wrap:wrap}
+.feedback{margin-top:10px;font-weight:700}.correct{color:var(--ok)}.wrong{color:var(--bad)}.manual{color:var(--muted);font-weight:400}
+.info{max-width:1000px;margin:18px auto 0;padding:14px 16px;background:#fff8e6;border:1px solid #f1dfad;border-radius:10px}
+@media(max-width:600px){h1{font-size:22px}.score{width:100%;margin-left:0}.fillinput{width:100%}.fillinput.small{width:100px}}
+@media print{.toolbar{display:none}body{background:white}.question{break-inside:avoid;box-shadow:none}}
+ 
+.overlay{position:fixed;inset:0;background:rgba(15,23,42,.82);display:flex;align-items:center;justify-content:center;z-index:50;padding:20px}
+.startCard{width:min(520px,100%);background:white;border-radius:18px;padding:30px;box-shadow:0 20px 70px rgba(0,0,0,.25);text-align:center}
+.startCard .brand{font-size:13px;font-weight:800;letter-spacing:.08em;color:#1f6feb;margin-bottom:8px}
+.startCard h1{margin:4px 0 10px;font-size:30px}.startCard p{color:#667085;margin:0 0 20px}
+.nameInput{width:100%;padding:13px;border:1px solid #c9d2dc;border-radius:9px;font:inherit;margin-bottom:12px}
+.startCard button{width:100%;font-size:16px}.startCard small{display:block;color:#667085;margin-top:14px}
+.hidden{display:none!important}
+.rankBox{max-width:1000px;margin:20px auto 0;background:#fff;border:1px solid #d9dee5;border-radius:12px;padding:18px}
+.rankBox h2{margin:0 0 12px;font-size:19px}.rankTable{width:100%;border-collapse:collapse}.rankTable th,.rankTable td{padding:9px;border-bottom:1px solid #e5e7eb;text-align:left}.rankTable th{font-size:12px;text-transform:uppercase;color:#667085}
+.me{font-weight:800;background:#eef6ff}.empty{color:#667085}
+</style></head><body>
+<div id="startOverlay" class="overlay">
+  <div class="startCard">
+    <div class="brand">🧱 GEOLOGIA DE ENGENHARIA</div>
+    <h1>Simulado • Lista 4</h1>
+    <p>Digite seu nome para começar. Sua nota será registrada no ranking deste navegador.</p>
+    <input id="studentName" class="nameInput" maxlength="40" placeholder="Seu nome completo">
+    <button onclick="startQuiz()">Começar simulado</button>
+    <small>29 questões • Aulas 08, 09 e 10</small>
+  </div>
+</div>
+<header><div class="wrap"><h1>Simulado Interativo • Geologia de Engenharia</h1><p>Lista de Exercícios 4 • Aulas 08, 09 e 10 • 29 questões</p></div></header>
+<div class="toolbar"><div class="wrap">
+<button onclick="corrigir()">Corrigir objetivas</button><button class="secondary" onclick="limparTudo()">Limpar respostas</button><button class="secondary" onclick="window.print()">Imprimir</button>
+<div class="score" id="score">Aluno: <span id="currentStudent">-</span> • Objetivas: ainda não corrigidas</div></div></div>
+<main>
+<div id="rankBox" class="rankBox hidden">
+<h2>🏆 Ranking deste navegador</h2>
+<table class="rankTable"><thead><tr><th>#</th><th>Nome</th><th>Nota</th><th>Acertos</th><th>Data</th></tr></thead><tbody id="rankBody"></tbody></table>
+<p class="empty" id="rankEmpty">Ainda não há resultados registrados.</p>
+<button class="secondary" onclick="clearRanking()">Limpar ranking deste navegador</button>
+</div>
+<div class="info"><b>Como usar:</b> marque as alternativas, preencha lacunas e cálculos e escreva as discursivas. O botão <b>Corrigir objetivas</b> corrige automaticamente alternativas, lacunas e cálculos. As discursivas ficam disponíveis para correção manual.</div>
+<section><h2>PARTE I • HIDROGEOLOGIA</h2><div class="question" data-type="mc" data-answer="B"><h3>1. A ação humana pode interferir negativamente no ciclo hidrológico principalmente por:</h3><div class="opts"><label><input type="radio" name="q1" value="A"> A) aumentar a infiltração em qualquer tipo de solo.</label><label><input type="radio" name="q1" value="B"> B) impermeabilizar o solo, remover vegetação e alterar o escoamento superficial.</label><label><input type="radio" name="q1" value="C"> C) diminuir sempre a evaporação e aumentar a recarga.</label><label><input type="radio" name="q1" value="D"> D) eliminar completamente o escoamento superficial.</label></div><div class="feedback"></div></div><div class="question" data-type="text"><h3>2. Explique duas formas pelas quais a ação humana pode interferir negativamente no ciclo hidrológico e indique uma consequência de cada uma.</h3><textarea name="q2" rows="5" placeholder="Digite sua resposta aqui..."></textarea><div class="feedback manual">Discursiva: resposta livre para correção manual.</div></div><div class="question" data-type="mc" data-answer="A"><h3>3. Assinale a alternativa que apresenta somente fatores que podem afetar a taxa de infiltração:</h3><div class="opts"><label><input type="radio" name="q3" value="A"> A) Porosidade do subsolo, vegetação, topografia e ocupação do solo.</label><label><input type="radio" name="q3" value="B"> B) Apenas temperatura e pressão atmosférica.</label><label><input type="radio" name="q3" value="C"> C) Apenas profundidade do lençol e temperatura.</label><label><input type="radio" name="q3" value="D"> D) Somente equipamentos de sondagem.</label></div><div class="feedback"></div></div><div class="question" data-type="fill" data-answer="[&quot;circula\u00e7\u00e3o&quot;]"><h3>4. Complete: Um aquífero é uma formação geológica que permite o armazenamento e a ________ da água subterrânea.</h3><input class="fillinput" name="q4" type="text"><div class="feedback"></div></div><div class="question" data-type="text"><h3>5. Explique o que é um aquífero e diferencie aquífero livre/freático, confinado/artesiano e suspenso.</h3><textarea name="q5" rows="5" placeholder="Digite sua resposta aqui..."></textarea><div class="feedback manual">Discursiva: resposta livre para correção manual.</div></div><div class="question" data-type="mc" data-answer="B"><h3>6. A recarga de um aquífero ocorre principalmente por:</h3><div class="opts"><label><input type="radio" name="q6" value="A"> A) evaporação direta da água subterrânea.</label><label><input type="radio" name="q6" value="B"> B) infiltração da água da precipitação através do solo e das rochas.</label><label><input type="radio" name="q6" value="C"> C) compactação do solo.</label><label><input type="radio" name="q6" value="D"> D) aumento do escoamento superficial.</label></div><div class="feedback"></div></div><div class="question" data-type="text"><h3>7. Explique a diferença entre a infiltração em um maciço de solo e em um maciço de rocha fraturada e por que isso é importante em chuvas de grande magnitude.</h3><textarea name="q7" rows="5" placeholder="Digite sua resposta aqui..."></textarea><div class="feedback manual">Discursiva: resposta livre para correção manual.</div></div><div class="question" data-type="mc" data-answer="C"><h3>8. Em relação à porosidade e ao fraturamento, assinale a correta:</h3><div class="opts"><label><input type="radio" name="q8" value="A"> A) A porosidade só influencia a resistência da rocha.</label><label><input type="radio" name="q8" value="B"> B) Fraturas nunca funcionam como caminhos preferenciais para água.</label><label><input type="radio" name="q8" value="C"> C) Porosidade fornece espaços para armazenamento e a conectividade dos vazios/fraturas favorece a circulação.</label><label><input type="radio" name="q8" value="D"> D) Porosidade e fraturamento não têm relação com contaminação.</label></div><div class="feedback"></div></div><div class="question" data-type="text"><h3>9. O que é erosão interna de um maciço? Segundo o material, quais ambientes/rochas são particularmente suscetíveis?</h3><textarea name="q9" rows="5" placeholder="Digite sua resposta aqui..."></textarea><div class="feedback manual">Discursiva: resposta livre para correção manual.</div></div><div class="question" data-type="mc" data-answer="B"><h3>10. O rebaixamento do lençol freático em uma obra pode provocar, nas edificações vizinhas:</h3><div class="opts"><label><input type="radio" name="q10" value="A"> A) somente aumento da umidade do terreno.</label><label><input type="radio" name="q10" value="B"> B) recalques/assentamentos, fissuras e deformações.</label><label><input type="radio" name="q10" value="C"> C) apenas aumento da resistência do solo.</label><label><input type="radio" name="q10" value="D"> D) nenhuma alteração, independentemente da extensão do rebaixamento.</label></div><div class="feedback"></div></div><div class="question" data-type="fill" data-answer="[&quot;maior&quot;]"><h3>11. Complete: Um LNAPL possui densidade menor que a água, enquanto um DNAPL possui densidade ________ que a água.</h3><input class="fillinput" name="q11" type="text"><div class="feedback"></div></div><div class="question" data-type="text"><h3>12. Explique a diferença entre contaminação natural e antrópica das águas subterrâneas. Dê exemplos de fontes antrópicas.</h3><textarea name="q12" rows="5" placeholder="Digite sua resposta aqui..."></textarea><div class="feedback manual">Discursiva: resposta livre para correção manual.</div></div></section><section><h2>PARTE II • PLANO DE INVESTIGAÇÕES E INVESTIGAÇÕES INDIRETAS</h2><div class="question" data-type="mc" data-answer="B"><h3>13. Um plano de investigações geotécnicas deve buscar caracterizar principalmente:</h3><div class="opts"><label><input type="radio" name="q13" value="A"> A) apenas a superfície do terreno.</label><label><input type="radio" name="q13" value="B"> B) o subsolo dentro do volume de influência da obra, incluindo estratigrafia, propriedades, água e possíveis descontinuidades.</label><label><input type="radio" name="q13" value="C"> C) somente a vegetação existente.</label><label><input type="radio" name="q13" value="D"> D) somente o custo da obra.</label></div><div class="feedback"></div></div><div class="question" data-type="text"><h3>14. Explique por que uma investigação geotécnica adequada pode reduzir riscos, custos e alterações tardias em um projeto.</h3><textarea name="q14" rows="5" placeholder="Digite sua resposta aqui..."></textarea><div class="feedback manual">Discursiva: resposta livre para correção manual.</div></div><div class="question" data-type="mc" data-answer="A"><h3>15. Qual alternativa diferencia corretamente investigações diretas e indiretas?</h3><div class="opts"><label><input type="radio" name="q15" value="A"> A) Diretas acessam o material; indiretas inferem condições do subsolo sem acesso direto ao material.</label><label><input type="radio" name="q15" value="B"> B) Diretas usam apenas drones; indiretas usam apenas SPT.</label><label><input type="radio" name="q15" value="C"> C) Diretas são sempre mais baratas que indiretas.</label><label><input type="radio" name="q15" value="D"> D) Não existe diferença conceitual.</label></div><div class="feedback"></div></div><div class="question" data-type="fill" data-answer="[&quot;indiretas&quot;, &quot;indireta&quot;]"><h3>16. Complete: Sensoriamento remoto e métodos geofísicos são exemplos de investigações _________.</h3><input class="fillinput" name="q16" type="text"><div class="feedback"></div></div><div class="question" data-type="mc" data-answer="C"><h3>17. No levantamento por VANT utilizando SfM, o material indica como referência mínima de sobreposição:</h3><div class="opts"><label><input type="radio" name="q17" value="A"> A) 10% lateral e 10% longitudinal.</label><label><input type="radio" name="q17" value="B"> B) 30% lateral e 60% longitudinal.</label><label><input type="radio" name="q17" value="C"> C) 60% lateral e 30% longitudinal.</label><label><input type="radio" name="q17" value="D"> D) 100% lateral e 100% longitudinal.</label></div><div class="feedback"></div></div></section><section><h2>PARTE III • PROJEÇÕES E MÉTODOS GEOFÍSICOS</h2><div class="question" data-type="mc" data-answer="B"><h3>18. Plano A: direção 090°, mergulho 30°. Plano B: direção 090°, mergulho 60°. Qual condição é atendida?</h3><div class="opts"><label><input type="radio" name="q18" value="A"> A) mesmo mergulho e direções diferentes.</label><label><input type="radio" name="q18" value="B"> B) mesma direção e mergulhos diferentes.</label><label><input type="radio" name="q18" value="C"> C) mesmo mergulho e mesma direção de mergulho.</label><label><input type="radio" name="q18" value="D"> D) direções e mergulhos diferentes.</label></div><div class="feedback"></div></div><div class="question" data-type="text"><h3>19. Cite os três grupos de métodos de sondagens geofísicas. Escolha um e explique seu fundamento, execução e pelo menos duas aplicações. São métodos diretos ou indiretos? Justifique.</h3><textarea name="q19" rows="5" placeholder="Digite sua resposta aqui..."></textarea><div class="feedback manual">Discursiva: resposta livre para correção manual.</div></div></section><section><h2>PARTE IV • INVESTIGAÇÕES DIRETAS</h2><div class="question" data-type="text"><h3>20. Explique a diferença entre amostra deformada e indeformada. Dê dois exemplos de obtenção para cada tipo.</h3><textarea name="q20" rows="5" placeholder="Digite sua resposta aqui..."></textarea><div class="feedback manual">Discursiva: resposta livre para correção manual.</div></div><div class="question" data-type="text"><h3>21. Em quais situações se utiliza a pluviação de areia? Explique como funciona e qual a relação entre altura de queda, diâmetro do funil e porosidade.</h3><textarea name="q21" rows="5" placeholder="Digite sua resposta aqui..."></textarea><div class="feedback manual">Discursiva: resposta livre para correção manual.</div></div></section><section><h2>PARTE V • SPT</h2><div class="question" data-type="calc" data-answer="16"><h3>22. SPT: 1º incremento = 4 golpes; 2º = 7; 3º = 9. Calcule o NSPT. Indique também quais golpes são desconsiderados.</h3><input class="fillinput" name="q22" type="text" placeholder="Resultado final"><div class="feedback"></div></div><div class="question" data-type="multi-fill" data-answer="[&quot;65&quot;, &quot;75&quot;, &quot;15&quot;, &quot;30&quot;]"><h3>23. Complete os dados do SPT: massa do martelo = ____ kg; altura de queda = ____ cm; cada incremento = ____ cm; o NSPT considera os últimos ____ cm.</h3><div class="fillrow"><input class="fillinput small" name="q23_0" type="text" placeholder="1"><input class="fillinput small" name="q23_1" type="text" placeholder="2"><input class="fillinput small" name="q23_2" type="text" placeholder="3"><input class="fillinput small" name="q23_3" type="text" placeholder="4"></div><div class="feedback"></div></div><div class="question" data-type="text"><h3>24. Explique de que forma a presença do nível d&#x27;água interfere no avanço da sondagem SPT.</h3><textarea name="q24" rows="5" placeholder="Digite sua resposta aqui..."></textarea><div class="feedback manual">Discursiva: resposta livre para correção manual.</div></div><div class="question" data-type="text"><h3>25. Cite as principais informações necessárias para que o relatório final de uma sondagem SPT permita interpretar as condições do subsolo.</h3><textarea name="q25" rows="5" placeholder="Digite sua resposta aqui..."></textarea><div class="feedback manual">Discursiva: resposta livre para correção manual.</div></div></section><section><h2>PARTE VI • SONDAGEM ROTATIVA E RQD</h2><div class="question" data-type="text"><h3>26. Responda: a) quando a sondagem rotativa é utilizada? b) qual é seu principal produto? c) quais informações são obtidas? d) qual vantagem importante apresenta em relação ao SPT?</h3><textarea name="q26" rows="5" placeholder="Digite sua resposta aqui..."></textarea><div class="feedback manual">Discursiva: resposta livre para correção manual.</div></div><div class="question" data-type="fill" data-answer="[&quot;maior&quot;]"><h3>27. Complete: O RQD considera, no cálculo, somente fragmentos de testemunho com comprimento ________ que 10 cm.</h3><input class="fillinput" name="q27" type="text"><div class="feedback"></div></div><div class="question" data-type="calc" data-answer="50"><h3>28. Em uma manobra de 200 cm foram recuperados fragmentos de 8, 12, 18, 25, 7, 30, 15 e 5 cm. Calcule o RQD. Use: RQD = (soma dos fragmentos considerados / comprimento total) × 100.</h3><input class="fillinput" name="q28" type="text" placeholder="Resultado final"><div class="feedback"></div></div></section><section><h2>DESAFIO FINAL</h2><div class="question" data-type="text"><h3>29. DESAFIO FINAL: Uma área para construção apresenta água subterrânea, camadas de solos diferentes, possibilidade de rocha em profundidade, grande extensão e edificações vizinhas. Responda: a) que investigações poderiam ser utilizadas inicialmente? b) qual a utilidade dos métodos indiretos? c) quando usar investigações diretas? d) qual método usar para investigar rocha em profundidade? e) qual índice avaliará a qualidade dos testemunhos? f) qual risco principal do rebaixamento do lençol para as edificações vizinhas?</h3><textarea name="q29" rows="5" placeholder="Digite sua resposta aqui..."></textarea><div class="feedback manual">Discursiva: resposta livre para correção manual.</div></div></section>
+</main>
+<script>
+
+let currentStudent = "";
+let resultSaved = false;
+
+function startQuiz(){
+  const input=document.getElementById("studentName");
+  const name=input.value.trim();
+  if(!name){alert("Digite seu nome para começar.");input.focus();return;}
+  currentStudent=name; resultSaved=false;
+  document.getElementById("currentStudent").textContent=name;
+  document.getElementById("startOverlay").classList.add("hidden");
+  renderRanking();
+}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));}
+function saveResult(acertos,total){
+  const results=JSON.parse(localStorage.getItem("geologiaRanking")||"[]");
+  results.push({name:currentStudent||"Aluno",score:Math.round(acertos/total*100),correct:acertos,total:total,date:new Date().toLocaleString("pt-BR")});
+  results.sort((a,b)=>b.score-a.score||b.correct-a.correct);
+  localStorage.setItem("geologiaRanking",JSON.stringify(results.slice(0,50)));
+  renderRanking();
+}
+function clearRanking(){
+  if(confirm("Apagar todo o ranking salvo neste navegador?")){
+    localStorage.removeItem("geologiaRanking");renderRanking();
+  }
+}
+function renderRanking(){
+  const box=document.getElementById("rankBox"),body=document.getElementById("rankBody"),empty=document.getElementById("rankEmpty");
+  const results=JSON.parse(localStorage.getItem("geologiaRanking")||"[]");
+  box.classList.remove("hidden");body.innerHTML="";
+  empty.style.display=results.length?"none":"block";
+  results.forEach((r,i)=>{
+    const tr=document.createElement("tr");
+    if(r.name===currentStudent)tr.className="me";
+    tr.innerHTML=`<td>${i+1}</td><td>${escapeHtml(r.name)}</td><td>${r.score}%</td><td>${r.correct}/${r.total}</td><td>${r.date}</td>`;
+    body.appendChild(tr);
+  });
+}
+
+function norm(s){return (s||'').toString().trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ');}
+function corrigir(){
+let total=0,acertos=0;
+document.querySelectorAll('.question').forEach(el=>{
+const type=el.dataset.type,fb=el.querySelector('.feedback'); if(type==='text')return; total++; let ok=false;
+if(type==='mc'){const x=el.querySelector('input:checked');ok=!!x&&x.value===el.dataset.answer;}
+else if(type==='calc'){ok=norm(el.querySelector('input').value)===norm(el.dataset.answer);}
+else if(type==='fill'){const x=el.querySelector('input'),a=JSON.parse(el.dataset.answer);ok=a.some(v=>norm(x.value)===norm(v));}
+else if(type==='multi-fill'){const a=JSON.parse(el.dataset.answer),xs=[...el.querySelectorAll('input')];ok=xs.every((x,i)=>norm(x.value)===norm(a[i]));}
+fb.className='feedback '+(ok?'correct':'wrong');fb.textContent=ok?'✓ Correta':'✗ Incorreta. Revise o conteúdo.';
+if(ok)acertos++;
+});
+document.getElementById('score').textContent=`Aluno: ${currentStudent} • Objetivas: ${acertos}/${total} (${Math.round(acertos/total*100)}%)`;
+if(!resultSaved){saveResult(acertos,total);resultSaved=true;}
+window.scrollTo({top:0,behavior:'smooth'});
+}
+function limparTudo(){
+document.querySelectorAll('input,textarea').forEach(x=>{if(x.type==='radio')x.checked=false;else x.value='';});
+document.querySelectorAll('.feedback').forEach(x=>{if(!x.classList.contains('manual')){x.textContent='';x.className='feedback';}});
+document.getElementById('score').textContent='Objetivas: ainda não corrigidas';
+}
+</script></body></html>
